@@ -1,3 +1,4 @@
 ﻿  main.cpp
-C:\Users\chaos\Desktop\Group 1 Strings\Group 1 Strings\main.cpp(66): warning C4018: '<': signed/unsigned mismatch
-  Group 1 Strings.vcxproj -> C:\Users\chaos\Desktop\Group 1 Strings\Debug\Group 1 Strings.exe
+C:\Users\chaos\Desktop\cisp430\Group 1 Strings\Group 1 Strings\main.cpp(81): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chaos\Desktop\cisp430\Group 1 Strings\Group 1 Strings\main.cpp(142): warning C4018: '<': signed/unsigned mismatch
+  Group 1 Strings.vcxproj -> C:\Users\chaos\Desktop\cisp430\Group 1 Strings\Debug\Group 1 Strings.exe

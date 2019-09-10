@@ -7,6 +7,7 @@ using namespace std;
 void stringCopy(char* a, char* b);
 bool stringCompare(char* a, char* b);
 void stringConcatenation(char* a, char* b);
+int stringPosition(char* a, char* b);
 
 //personal function 
 void handleReadArrays(char* a, char* b);
@@ -43,6 +44,20 @@ int main() {
 	stringConcatenation(a, b);
 	cout << "Data returned from stringConcaternation...\n";
 	handleReadArrays(a, b);
+
+	//read fourth line from text file
+	read >> a >> b;
+	cout << "Making a call to function stringPosition...\n";
+	int position = stringPosition(a, b);
+	cout << "Data returned from stringPosition...\n";
+	cout << "---------------------\n";
+	cout << "Match found in location " << position << " of array a\n";
+
+
+
+
+
+
 
 
 
@@ -110,7 +125,7 @@ void stringConcatenation(char* a, char* b) {
 
 	//set counter to be at the end of a length
 	int i = 4;
-	
+
 	//j counter for b
 	int j = 0;
 	for (; i < newSize; i++) {
@@ -123,6 +138,15 @@ void stringConcatenation(char* a, char* b) {
 	a[i] = '\0';
 }
 
+int stringPosition(char* a, char* b) {
+	for (int i = 0; i < strlen(a); i++) {
+		if (a[i] == b[0]) {
+			return i;
+		}
+	}
+	
+	return -1;
+}
 
 
 void handleReadArrays(char* a, char* b) {
