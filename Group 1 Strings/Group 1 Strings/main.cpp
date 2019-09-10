@@ -8,6 +8,7 @@ void stringCopy(char* a, char* b);
 bool stringCompare(char* a, char* b);
 void stringConcatenation(char* a, char* b);
 int stringPosition(char* a, char* b);
+int stringLength(char* a);
 
 //personal function 
 void handleReadArrays(char* a, char* b);
@@ -53,20 +54,14 @@ int main() {
 	cout << "---------------------\n";
 	cout << "Match found in location " << position << " of array a\n";
 
+	//read fifth line from text file
+	read >> a;
+	cout << "Making a call to function stringLength...\n";
+	stringLength(a);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+	//close connection to file
+	read.close();
 
 
 
@@ -146,6 +141,22 @@ int stringPosition(char* a, char* b) {
 	}
 	
 	return -1;
+}
+
+int stringLength(char* a) {
+	int aLength = strlen(a);
+	
+	//a temp character array
+	char temp[255];
+	
+	//copy contents to temp
+	for (int i = 0; i < aLength; i++) {
+		temp[i] = a[i];
+	}
+
+	//set first index to the length of the character array
+	a[0] = aLength;
+
 }
 
 
