@@ -52,12 +52,19 @@ int main() {
 	int position = stringPosition(a, b);
 	cout << "Data returned from stringPosition...\n";
 	cout << "---------------------\n";
-	cout << "Match found in location " << position << " of array a\n";
+	cout << "Match found in location " << position << " of array a\n\n";
 
 	//read fifth line from text file
 	read >> a;
 	cout << "Making a call to function stringLength...\n";
-	stringLength(a);
+	int length = stringLength(a);
+	cout << "Data returned from stringLength...\n";
+	cout << "---------------------\n";
+	cout << "a: " << a << endl;
+	cout << "the length of a is " << length << endl;
+
+
+
 
 
 	//close connection to file
@@ -144,18 +151,34 @@ int stringPosition(char* a, char* b) {
 }
 
 int stringLength(char* a) {
+	
+	//get the length of the string
 	int aLength = strlen(a);
-	
-	//a temp character array
+
+	//convert integer to a character data type
+	char charLength = '0' + aLength;
+
+	//temp character array
 	char temp[255];
-	
+
 	//copy contents to temp
 	for (int i = 0; i < aLength; i++) {
 		temp[i] = a[i];
 	}
 
+	
 	//set first index to the length of the character array
-	a[0] = aLength;
+	a[0] = charLength;
+
+	int i = 1;
+	int j = 0;
+	for (; i <= aLength; i++) {
+		a[i] = temp[j];
+		j++;
+	}
+
+	a[i] = '\0';
+	return aLength;
 
 }
 
