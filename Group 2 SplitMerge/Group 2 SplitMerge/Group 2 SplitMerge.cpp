@@ -51,15 +51,15 @@ Node* ReadFile() {
 		//create a new node for each name
 		Node* newNode = new Node;
 
-		//read current name
-		read >> newNode->name;
-		newNode->next = NULL;
+//read current name
+read >> newNode->name;
+newNode->next = NULL;
 
-		//link new node to the head
-		currentNode->next = newNode;
+//link new node to the head
+currentNode->next = newNode;
 
-		//move current node to the next linked node
-		currentNode = currentNode->next;
+//move current node to the next linked node
+currentNode = currentNode->next;
 	}
 
 	//close the file
@@ -99,75 +99,112 @@ void SplitAndMerge(Node* head) {
 	Node* list_2 = new Node;
 
 	//flag variables
-	bool isFirst_1 = true;
-	bool isFirst_2 = true;
+	bool isFirst = true;
 
 	//keep track of current node
 	Node* currentNode = head;
 	Node* currentNewNode = list_1;
 
-	for (int i = 1; i < (totalNodes-1); i++) {
-		
+	//create first list
+	for (int i = 1; i <= (totalNodes / 2); i++) {
 
-		//for first list
-		if (i < (totalNodes / 2)) {
-			
-			//precondition for first node
-			if (isFirst_1) {
-				list_1->name = currentNode->name;
-				list_1->next = NULL;
-				currentNode = currentNode->next;
-				isFirst_1 = false;
-			}
+		if (isFirst) {
+			//get first name
+			list_1->name = currentNode->name;
 
-			//create a new node
-			Node* newNode = new Node;
-			newNode->name = currentNode->name;
-			newNode->next = NULL;
-			currentNewNode->next = newNode;
-			currentNewNode = currentNewNode->next;
+			//set node to null
+			list_1->next = NULL;
+
+			//make current head traverse
 			currentNode = currentNode->next;
 
+			//set flag variable to false
+			isFirst = false;
+
 		}
-		
 		else {
-			//precondition for second node
-			if (isFirst_2) {
-				list_2->name = currentNode->name;
-				list_2->next = NULL;
-				currentNode = currentNode->next;
 
-				//reset head status 
-				currentNewNode = list_2;
+			//before we create a new node, lets check to see 
+			//if there is even another node to append first
+			if (totalNodes != 2) {
+				Node* newNode = new Node;
 
-				isFirst_2 = false;
+
+				//set new node to whatever current node is pointing to
+				newNode->name = currentNode->name;
+				//set newNode next to null
+				newNode->next = NULL;
+
+				//link newNode
+				currentNewNode->next = newNode;
+
+				//move the currentNewNode to the appended new node
+				currentNewNode = currentNewNode->next;
+
+				//if currentNode->next does not have null
+				if (currentNode->next) {
+					currentNode = currentNode->next;
+				}
 			}
 
-			//create a new node
-			Node* newNode = new Node;
-			newNode->name = currentNode->name;
-			newNode->next = NULL;
-			currentNewNode->next = newNode;
-			currentNewNode = currentNewNode->next;
-			currentNode = currentNode->next;
 		}
-		
-	
+	}
+
+	//generate second list
+	isFirst = true;
+	currentNewNode = list_2;
+
+	for (int i = (totalNodes / 2) + 1; i <= totalNodes; i++) {
+		if (isFirst) {
+			//get first name
+			list_2->name = currentNode->name;
+
+			//set node to null
+			list_2->next = NULL;
+
+			//make current head traverse
+			currentNode = currentNode->next;
+
+			//set flag variable to false
+			isFirst = false;
+
+		}
+		else {
+
+			if (totalNodes != 2) {
+				Node* newNode = new Node;
+
+
+				//set new node to whatever current node is pointing to
+				newNode->name = currentNode->name;
+				//set newNode next to null
+				newNode->next = NULL;
+
+				//link newNode
+				currentNewNode->next = newNode;
+
+				//move the currentNewNode to the appended new node
+				currentNewNode = currentNewNode->next;
+
+				//if currentNode->next does not have null
+				if (currentNode->next) {
+					currentNode = currentNode->next;
+				}
+			}
+		}
 	}
 
 
 
-
-	
 	cout << "list 1: " << endl;
 	Traverse(list_1);
 
 	cout << "list 2: " << endl;
 
 	Traverse(list_2);
-
-
 }
+
+
 
 
 
