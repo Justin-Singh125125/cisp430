@@ -19,12 +19,18 @@ void SplitAndMerge(Node* head);
 
 int main()
 {
+	cout << "Calling ReadFile Function..." << endl;
+
 	//create a list from reading the file
 	Node* head = ReadFile();
 
+	cout << "Completed ReadFile Function..." << endl << endl;
+
+	cout << "Calling SplitAndMerge Function..." << endl << endl;
 	SplitAndMerge(head);
 
-	//Traverse(head);
+	cout << "\nFinished SplitAndMerge Function..." << endl;
+
 	return 0;
 }
 
@@ -53,15 +59,15 @@ Node* ReadFile() {
 		//create a new node for each name
 		Node* newNode = new Node;
 
-//read current name
-read >> newNode->name;
-newNode->next = NULL;
+		//read current name
+		read >> newNode->name;
+		newNode->next = NULL;
 
-//link new node to the head
-currentNode->next = newNode;
+		//link new node to the head
+		currentNode->next = newNode;
 
-//move current node to the next linked node
-currentNode = currentNode->next;
+		//move current node to the next linked node
+		currentNode = currentNode->next;
 	}
 
 	//close the file
@@ -147,7 +153,7 @@ void Traverse(Node* head) {
 	while (head) {
 
 		//print out current name
-		cout << "name: " << head->name << endl;
+		cout << head->name << endl;
 
 		//move to the next node
 		head = head->next;
@@ -267,18 +273,19 @@ void SplitAndMerge(Node* head) {
 		}
 	}
 
-
-
-	cout << "list 1: " << endl;
+	cout << "Calling Traverse function for list 1" << endl;
 	Traverse(list_1);
 
-	cout << "list 2: " << endl;
-
+	cout << "\nCalling Traverse function for list 2" << endl;
 	Traverse(list_2);
 
+	cout << "\nCalling Merge function..." << endl;
 	Node * newList = Merge(list_1, list_2);
 
-	cout << "Calling the last traverse:\n\n";
+	cout << "Finished Merge function..." << endl << endl;
+
+
+	cout << "Calling Traverse Function for mergedList" << endl;
 	Traverse(newList);
 }
 
