@@ -104,8 +104,7 @@ void SplitAndMerge(Node* head) {
 
 	//keep track of current node
 	Node* currentNode = head;
-	Node* currentNewNode_1 = list_1;
-	Node* currentNewNode_2 = list_2;
+	Node* currentNewNode = list_1;
 
 	for (int i = 1; i < (totalNodes-1); i++) {
 		
@@ -125,8 +124,8 @@ void SplitAndMerge(Node* head) {
 			Node* newNode = new Node;
 			newNode->name = currentNode->name;
 			newNode->next = NULL;
-			currentNewNode_1->next = newNode;
-			currentNewNode_1 = currentNewNode_1->next;
+			currentNewNode->next = newNode;
+			currentNewNode = currentNewNode->next;
 			currentNode = currentNode->next;
 
 		}
@@ -137,6 +136,10 @@ void SplitAndMerge(Node* head) {
 				list_2->name = currentNode->name;
 				list_2->next = NULL;
 				currentNode = currentNode->next;
+
+				//reset head status 
+				currentNewNode = list_2;
+
 				isFirst_2 = false;
 			}
 
@@ -144,8 +147,8 @@ void SplitAndMerge(Node* head) {
 			Node* newNode = new Node;
 			newNode->name = currentNode->name;
 			newNode->next = NULL;
-			currentNewNode_2->next = newNode;
-			currentNewNode_2 = currentNewNode_2->next;
+			currentNewNode->next = newNode;
+			currentNewNode = currentNewNode->next;
 			currentNode = currentNode->next;
 		}
 		
