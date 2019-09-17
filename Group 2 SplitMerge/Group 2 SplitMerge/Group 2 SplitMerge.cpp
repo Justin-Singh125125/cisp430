@@ -142,12 +142,10 @@ void SplitAndMerge(Node* head) {
 
 				if (totalNodes > 2) {
 					currentNode = currentNode->next;
+					//reset head status 
+					currentNewNode = list_2;
 				}
 				
-
-				//reset head status 
-				currentNewNode = list_2;
-
 				isFirst_2 = false;
 			}
 
