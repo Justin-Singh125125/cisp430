@@ -107,7 +107,7 @@ void SplitAndMerge(Node* head) {
 	Node* currentNewNode_1 = list_1;
 	Node* currentNewNode_2 = list_2;
 
-	for (int i = 1; i < totalNodes; i++) {
+	for (int i = 1; i < (totalNodes-1); i++) {
 		
 
 		//for first list
@@ -161,7 +161,7 @@ void SplitAndMerge(Node* head) {
 
 	cout << "list 2: " << endl;
 
-	//Traverse(list_2);
+	Traverse(list_2);
 
 
 }
