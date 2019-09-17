@@ -19,6 +19,7 @@ int main()
 {
 	//create a list from reading the file
 	Node* head = ReadFile();
+
 	SplitAndMerge(head);
 
 	//Traverse(head);
@@ -97,21 +98,71 @@ void SplitAndMerge(Node* head) {
 	Node* list_1 = new Node;
 	Node* list_2 = new Node;
 
+	//flag variables
+	bool isFirst_1 = true;
+	bool isFirst_2 = true;
+
 	//keep track of current node
 	Node* currentNode = head;
+	Node* currentNewNode_1 = list_1;
+	Node* currentNewNode_2 = list_2;
 
+	for (int i = 1; i < totalNodes; i++) {
+		
 
+		//for first list
+		if (i < (totalNodes / 2)) {
+			
+			//precondition for first node
+			if (isFirst_1) {
+				list_1->name = currentNode->name;
+				list_1->next = NULL;
+				currentNode = currentNode->next;
+				isFirst_1 = false;
+			}
 
-	for (int i = 0; i < totalNodes; i++) {
+			//create a new node
+			Node* newNode = new Node;
+			newNode->name = currentNode->name;
+			newNode->next = NULL;
+			currentNewNode_1->next = newNode;
+			currentNewNode_1 = currentNewNode_1->next;
+			currentNode = currentNode->next;
 
-		//create a new Node
-		Node* newNode = new Node;
+		}
+		
+		else {
+			//precondition for second node
+			if (isFirst_2) {
+				list_2->name = currentNode->name;
+				list_2->next = NULL;
+				currentNode = currentNode->next;
+				isFirst_2 = false;
+			}
+
+			//create a new node
+			Node* newNode = new Node;
+			newNode->name = currentNode->name;
+			newNode->next = NULL;
+			currentNewNode_2->next = newNode;
+			currentNewNode_2 = currentNewNode_2->next;
+			currentNode = currentNode->next;
+		}
+		
+	
 	}
 
 
 
 
-	cout << "there are this many nodes: " << totalNodes << endl;
+	
+	cout << "list 1: " << endl;
+	Traverse(list_1);
+
+	cout << "list 2: " << endl;
+
+	//Traverse(list_2);
+
 
 }
 
