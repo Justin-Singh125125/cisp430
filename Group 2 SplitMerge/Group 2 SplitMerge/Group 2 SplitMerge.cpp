@@ -106,11 +106,11 @@ void SplitAndMerge(Node* head) {
 	Node* currentNode = head;
 	Node* currentNewNode = list_1;
 
-	for (int i = 1; i < (totalNodes-1); i++) {
+	for (int i = 1; i <= (totalNodes-1); i++) {
 		
 
 		//for first list
-		if (i < (totalNodes / 2)) {
+		if (i <= (totalNodes / 2)) {
 			
 			//precondition for first node
 			if (isFirst_1) {
@@ -120,13 +120,17 @@ void SplitAndMerge(Node* head) {
 				isFirst_1 = false;
 			}
 
-			//create a new node
-			Node* newNode = new Node;
-			newNode->name = currentNode->name;
-			newNode->next = NULL;
-			currentNewNode->next = newNode;
-			currentNewNode = currentNewNode->next;
-			currentNode = currentNode->next;
+
+			if (totalNodes > 2) {
+				//create a new node
+				Node* newNode = new Node;
+				newNode->name = currentNode->name;
+				newNode->next = NULL;
+				currentNewNode->next = newNode;
+				currentNewNode = currentNewNode->next;
+				currentNode = currentNode->next;
+			}
+		
 
 		}
 		
@@ -135,7 +139,11 @@ void SplitAndMerge(Node* head) {
 			if (isFirst_2) {
 				list_2->name = currentNode->name;
 				list_2->next = NULL;
-				currentNode = currentNode->next;
+
+				if (totalNodes > 2) {
+					currentNode = currentNode->next;
+				}
+				
 
 				//reset head status 
 				currentNewNode = list_2;
@@ -143,13 +151,17 @@ void SplitAndMerge(Node* head) {
 				isFirst_2 = false;
 			}
 
-			//create a new node
-			Node* newNode = new Node;
-			newNode->name = currentNode->name;
-			newNode->next = NULL;
-			currentNewNode->next = newNode;
-			currentNewNode = currentNewNode->next;
-			currentNode = currentNode->next;
+			
+			if (totalNodes > 2) {
+				//create a new node
+				Node* newNode = new Node;
+				newNode->name = currentNode->name;
+				newNode->next = NULL;
+				currentNewNode->next = newNode;
+				currentNewNode = currentNewNode->next;
+				currentNode = currentNode->next;
+			}
+		
 		}
 		
 	
