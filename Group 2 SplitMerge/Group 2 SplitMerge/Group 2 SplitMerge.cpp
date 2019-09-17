@@ -10,8 +10,10 @@ struct Node {
 };
 
 Node* ReadFile();
+Node* Merge(Node* list_1, Node* list_2);
 void Traverse(Node* head);
 void SplitAndMerge(Node* head);
+
 
 
 
@@ -67,6 +69,77 @@ currentNode = currentNode->next;
 
 	return head;
 }
+
+Node* Merge(Node* list_1, Node* list_2) {
+	//create a head node
+	Node* head = new Node;
+	
+	//current node to point at head and traverse through
+	Node* current = head;
+
+	//create a flag variable
+	bool isFirst = true;
+
+	//append list 1 to head
+	while (list_1) {
+
+		if (isFirst) {
+			//set the first ever node
+			head->name = list_1->name;
+			head->next = NULL;
+			
+			//set the flag variable so we do not enter here again
+			isFirst = false;
+
+			//traverse to the next node just in case
+		
+			//traverse to the next node of list_1
+			list_1 = list_1->next;
+			
+
+		}
+		else {
+
+			//create a new Node
+			Node* newNode = new Node;
+			newNode->name = list_1->name;
+			newNode->next = NULL;
+
+			//link the new node to head current
+			current->next = newNode;
+
+			//traverse to the next node of list_1
+			list_1 = list_1->next;
+
+			//traverse up the head to add new nodes
+			current = current->next;
+		}
+	}
+
+	//append list _2
+	while (list_2) {
+
+			//create a new Node
+			Node* newNode = new Node;
+			newNode->name = list_2->name;
+			newNode->next = NULL;
+
+			//link the new node to head current
+			current->next = newNode;
+
+			//traverse to the next node of list_1
+			list_2 = list_2->next;
+
+			//traverse up the head to add new nodes
+			current = current->next;
+	}
+	
+	//return the combined list
+	return head;
+}
+
+
+
 
 void Traverse(Node* head) {
 
@@ -202,6 +275,11 @@ void SplitAndMerge(Node* head) {
 	cout << "list 2: " << endl;
 
 	Traverse(list_2);
+
+	Node * newList = Merge(list_1, list_2);
+
+	cout << "Calling the last traverse:\n\n";
+	Traverse(newList);
 }
 
 
