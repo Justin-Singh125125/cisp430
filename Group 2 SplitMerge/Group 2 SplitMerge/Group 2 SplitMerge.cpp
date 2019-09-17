@@ -105,76 +105,13 @@ void SplitAndMerge(Node* head) {
 	//keep track of current node
 	Node* currentNode = head;
 	Node* currentNewNode = list_1;
-
-	for (int i = 1; i <= (totalNodes-1); i++) {
 		
-
-		//for first list
-		if (i <= (totalNodes / 2)) {
-			
-			//precondition for first node
-			if (isFirst_1) {
-				list_1->name = currentNode->name;
-				list_1->next = NULL;
-				currentNode = currentNode->next;
-				isFirst_1 = false;
-			}
-
-
-			if (totalNodes > 2) {
-				//create a new node
-				Node* newNode = new Node;
-				newNode->name = currentNode->name;
-				newNode->next = NULL;
-				currentNewNode->next = newNode;
-				currentNewNode = currentNewNode->next;
-				currentNode = currentNode->next;
-			}
-		
-
-		}
-		
-		
-			//precondition for second node
-			if (isFirst_2) {
-				list_2->name = currentNode->name;
-				list_2->next = NULL;
-
-				if (totalNodes > 2) {
-					currentNode = currentNode->next;
-					//reset head status 
-					currentNewNode = list_2;
-				}
-				
-				isFirst_2 = false;
-			}
-
-			
-			if (totalNodes > 2) {
-				//create a new node
-				Node* newNode = new Node;
-				newNode->name = currentNode->name;
-				newNode->next = NULL;
-				currentNewNode->next = newNode;
-				currentNewNode = currentNewNode->next;
-				currentNode = currentNode->next;
-			}
-		
-		
-		
-	
-	}
-
-
-
-
-	
 	cout << "list 1: " << endl;
-	Traverse(list_1);
+	//Traverse(list_1);
 
 	cout << "list 2: " << endl;
 
-	Traverse(list_2);
+	//Traverse(list_2);
 
 
 }
