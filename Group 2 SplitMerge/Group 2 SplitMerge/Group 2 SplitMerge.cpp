@@ -134,7 +134,7 @@ void SplitAndMerge(Node* head) {
 
 		}
 		
-		else {
+		
 			//precondition for second node
 			if (isFirst_2) {
 				list_2->name = currentNode->name;
@@ -162,7 +162,7 @@ void SplitAndMerge(Node* head) {
 				currentNode = currentNode->next;
 			}
 		
-		}
+		
 		
 	
 	}
