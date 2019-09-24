@@ -10,10 +10,11 @@ struct Node {
 
 
 //function defintions
-void handleDecimalConversion(Node *& top, const int & decimal);
+void handleBinaryConversion(Node *& top, const int & decimal);
+void handleHexadecimalConversion(Node *& top, const int & decimal);
 void handlePush(Node * & top, const int & data);
 void handlePopAll(Node * & top);
-void handleDisplayStack(Node * top);
+
 
 //main function
 int main() {
@@ -22,18 +23,20 @@ int main() {
     int decimal;
     cout << "Enter a decimal number\n";
     cin >> decimal;
-    
+
     //create a node that will point to the top of elements
     Node * top = NULL;
-    
-    handleDecimalConversion(top,decimal);
+
+    //call conversion functions
+    handleBinaryConversion(top,decimal);
+    handleHexadecimalConversion(top, decimal);
     
     return 0;
 }
 
 
 
-void handleDecimalConversion(Node *& top, const int &decimal){
+void handleBinaryConversion(Node *& top, const int &decimal){
     
     //create two necessity variables
     int quotient = decimal;
@@ -55,6 +58,30 @@ void handleDecimalConversion(Node *& top, const int &decimal){
     handlePopAll(top);
     
   
+}
+
+
+void handleHexadecimalConversion(Node *& top, const int & decimal){
+    
+    //create two necessity variables
+    int quotient = decimal;
+    int remainder = 0;
+    
+    do {
+        
+        //set the quotient and the remainder
+        //set remainder first to ensure results
+        remainder = (quotient % 16);
+        quotient /= 16;
+        
+        //push remainder onto stack
+        
+        handlePush(top, remainder);
+        
+    } while (quotient!=0);
+    
+    cout << decimal << " converted to hexadecimal: 0x";
+    handlePopAll(top);
 }
 
 void handlePush(Node *& top, const int & data){
@@ -99,22 +126,20 @@ void handlePopAll(Node * & top){
         top = top->next;
         
         //display current temp
-        cout << temp->data;
+        
+        if(temp->data > 9){
+            char test = temp->data + 55;
+            cout << test;
+        }
+        else{
+            cout << temp->data;
+        }
+  
         
         //clean up the stack
         delete temp;
     }
-
+    cout << endl;
 }
 
 
-void handleDisplayStack(Node * top){
-    
-    //while top doesnt point to null
-    
-    cout << "top list: " << endl;
-    while(top){
-        cout << top->data << endl;
-        top = top->next;
-    }
-}
