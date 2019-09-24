@@ -11,7 +11,8 @@ struct Node {
 
 //function defintions
 void handleDecimalConversion(Node *& top, const int & decimal);
-void handlePush(Node *& top, const int & data);
+void handlePush(Node * & top, const int & data);
+void handlePopAll(Node * & top);
 void handleDisplayStack(Node * top);
 
 //main function
@@ -26,9 +27,6 @@ int main() {
     Node * top = NULL;
     
     handleDecimalConversion(top,decimal);
-    
-    cout << "done executing: \n";
-    handleDisplayStack(top);
     
     return 0;
 }
@@ -52,6 +50,9 @@ void handleDecimalConversion(Node *& top, const int &decimal){
         handlePush(top, remainder);
         
     } while (quotient!=0);
+    
+    cout << decimal << " converted to binary: ";
+    handlePopAll(top);
     
   
 }
@@ -84,6 +85,29 @@ void handlePush(Node *& top, const int & data){
         
     }
 }
+
+void handlePopAll(Node * & top){
+    
+    //while top doesnt point to null
+    while(top){
+        
+        //create a temp node for us to delete
+        //and point it at top
+        Node * temp = top;
+        
+        //make top traverse to the next node;
+        top = top->next;
+        
+        //display current temp
+        cout << temp->data;
+        
+        //clean up the stack
+        delete temp;
+    }
+
+}
+
+
 void handleDisplayStack(Node * top){
     
     //while top doesnt point to null
