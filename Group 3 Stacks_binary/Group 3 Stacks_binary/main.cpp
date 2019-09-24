@@ -12,6 +12,7 @@ struct Node {
 //function defintions
 void handleDecimalConversion(Node *& top, const int & decimal);
 void handlePush(Node *& top, const int & data);
+void handleDisplayStack(Node * top);
 
 //main function
 int main() {
@@ -22,11 +23,12 @@ int main() {
     cin >> decimal;
     
     //create a node that will point to the top of elements
-    Node * top = new Node;
+    Node * top = NULL;
     
     handleDecimalConversion(top,decimal);
     
-    cout << "done executing: " << top->data;
+    cout << "done executing: \n";
+    handleDisplayStack(top);
     
     return 0;
 }
@@ -45,20 +47,50 @@ void handleDecimalConversion(Node *& top, const int &decimal){
         //set remainder first to ensure results
         remainder = (quotient % 2);
         quotient /= 2;
-        cout << "quotient: " << quotient<< endl;
-        cout << "remainder: " << remainder << endl;
-        
+      
         //push remainder onto stack
         handlePush(top, remainder);
         
     } while (quotient!=0);
     
-    //first case for adding new node
-    if(!top->next){
-        cout << "top is not pointing to anything";
-    }
+  
 }
 
 void handlePush(Node *& top, const int & data){
-    top->data= 4;
+    
+    //if this is the first node to be at top
+    if(!top){
+        
+        //make top point to a new node
+        top = new Node;
+        top->data = data;
+        top->next = NULL;
+    }
+    
+    //if an node already exists in top
+    else{
+        
+        //create a brand new node
+        Node * nn = new Node;
+        
+        //fill node with data
+        nn->data = data;
+        
+        //make the new node connect to whatever top is pointing to
+        nn->next = top;
+        
+        //make top point to the newest top node
+        top = nn;
+        
+    }
+}
+void handleDisplayStack(Node * top){
+    
+    //while top doesnt point to null
+    
+    cout << "top list: " << endl;
+    while(top){
+        cout << top->data << endl;
+        top = top->next;
+    }
 }
