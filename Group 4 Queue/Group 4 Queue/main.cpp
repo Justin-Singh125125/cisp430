@@ -84,6 +84,45 @@ void handleEnqueue(Node *&front, Node *&rear, const int &data)
 }
 void handleDequeue(Node *&front, Node *&rear, Node *&current, Node *&prev)
 {
+    bool isFirst = true;
+
+    while (current)
+    {
+        if (current->data < 0)
+        {
+
+            Node *temp = current;
+
+            if (isFirst)
+            {
+
+                if (current->next)
+                {
+                    current = current->next;
+                    front = rear = prev = current;
+                    delete temp;
+                }
+                else
+                {
+                    current = prev = front = rear = NULL;
+                    delete temp;
+                }
+
+                isFirst = false;
+            }
+        }
+        else
+        {
+            if (isFirst)
+            {
+                current = prev = NULL;
+                isFirst = false;
+            }
+            else
+            {
+            }
+        }
+    }
 }
 
 void displayList(Node *&front)
