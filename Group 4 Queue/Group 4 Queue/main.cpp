@@ -99,7 +99,7 @@ void handleDequeue(Node *&front, Node *&rear, Node *&current, Node *&prev)
                 if (current->next)
                 {
                     current = current->next;
-                    front = rear = prev = current;
+                    front = prev = current;
                     delete temp;
                 }
                 else
@@ -110,16 +110,45 @@ void handleDequeue(Node *&front, Node *&rear, Node *&current, Node *&prev)
 
                 isFirst = false;
             }
+            else
+            {
+
+                if (front == rear)
+                {
+                    front = rear = current = prev = NULL;
+                    delete temp;
+                }
+                else
+                {
+                    if (current == rear)
+                    {
+                        rear = prev;
+                        rear->next = NULL;
+
+                        current = prev = NULL;
+                        delete temp;
+                    }
+                    else
+                    {
+                        current = current->next;
+                        prev->next = current;
+                        prev = current;
+                        delete temp;
+                    }
+                }
+            }
         }
         else
         {
-            if (isFirst)
+            //if there is only one node left
+            if (front == rear)
             {
                 current = prev = NULL;
-                isFirst = false;
             }
             else
             {
+                current = current->next;
+                isFirst = false;
             }
         }
     }
