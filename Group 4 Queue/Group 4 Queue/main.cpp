@@ -156,7 +156,12 @@ void handleDequeue(Node *&front, Node *&rear, Node *&current, Node *&prev)
             }
             else
             {
+
                 current = current->next;
+                if (prev->next != current)
+                {
+                    prev = prev->next;
+                }
                 isFirst = false;
             }
         }
