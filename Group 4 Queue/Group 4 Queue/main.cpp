@@ -130,10 +130,19 @@ void handleDequeue(Node *&front, Node *&rear, Node *&current, Node *&prev)
                     }
                     else
                     {
-                        current = current->next;
-                        prev->next = current;
-                        prev = current;
-                        delete temp;
+                        if (front->data < 0)
+                        {
+                            current = current->next;
+                            front = prev = current;
+                            delete temp;
+                        }
+                        else
+                        {
+                            current = current->next;
+                            prev->next = current;
+                            prev = current;
+                            delete temp;
+                        }
                     }
                 }
             }
