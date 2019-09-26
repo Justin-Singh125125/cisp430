@@ -11,6 +11,12 @@ struct Node {
 string handleReadFile();
 string handleExpressionConversion(const string& expression);
 
+void handlePush(Node*& top, const string& data);
+string handlePop(Node*& top);
+
+int handlePrecedence(const string& character);
+
+
 int main()
 {
 	//create a string that is going to hold the expression
@@ -41,89 +47,112 @@ string handleReadFile() {
 }
 
 string handleExpressionConversion(const string& expression) {
-
-	//creating a stack structure to handle conversion
-	Node* top = NULL;
-
-	//create a current to keep track of where we are at on the stack
-	Node* current = NULL;
-
-
-
-	//create a string for the converted expression
 	string convertedExpression = "";
 
+	//create a stack 
+	Node* top = NULL;
 
 	for (int i = 0; i < expression.length(); i++) {
 
-		//if the current character is one of the operators
 		if (expression[i] == '(' || expression[i] == ')' || expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/') {
-		
-			//if there is nothing on stack, just push the first operator
-			if (!top) {
-				top = new Node;
-				top->data = expression[i];
-				top->next = NULL;
-
-				//make current point to the first top node
-				current = top;
+			
+			//check if stack is empty
+			if (handlePop(top) == "\0") {
+				handlePush(top, expression.at(i));
 			}
 			else {
-				//make current point to top everytime
-				current = top;
-
-				//now we need to do a series of checks
-				//check whatever top is pointing to
-				Node* nn = new Node;
-				nn->data = expression[i];
-				nn->next = NULL;
-			
-				while (current) {
-
-					//
-					if ((current->data == "+" && nn->data == "+") || (current->data == "+" && nn->data == "-") || (current->data == "-" && nn->data == "-") || (current->data == "-" && nn->data == "+")) {
-						
-						//make a temp point to current
-						Node* temp = current;
-
-						//make current and top point to the new nn
-						top = current = nn;
-
-						//when this happens, we have to pop and add to the current expression
-						convertedExpression += temp->data;
-
-						delete temp;
-
-					}
-					else if (current->data == "+" && nn->data == "*") {
-						//make top point to the new node
-						top = nn;
-
-						//link the new node to the old node
-						top->next = current;
-					}
-
-					current = current->next;
-				}
-
-
+				
+				//track precedence
+				int currentTopPrecedence = handlePrecedence(top->data);
+				int currentExpressionPrecedence = handlePrecedence(expression[i])
 			}
 		}
-		//if the current character is not an operator, just append it to the list
 		else {
 			convertedExpression += expression[i];
 		}
 	}
 
-	//since we hit the end of the expression, we now have to pop everything from stack if there is any
-
+	//pop the rest of the data off the stack
 	while (top) {
-		convertedExpression += top->data;
-		top = top->next;
+		convertedExpression += handlePop(top);
 	}
-
-
+	
 
 
 	return convertedExpression;
+}
+
+
+void handlePush(Node*& top, const string& data)
+{
+
+	//if this is the first node to be at top
+	if (!top)
+	{
+
+		//make top point to a new node
+		top = new Node;
+		top->data = data;
+		top->next = NULL;
+	}
+
+	//if an node already exists in top
+	else
+	{
+
+		//create a brand new node
+		Node* nn = new Node;
+
+		//fill node with data
+		nn->data = data;
+
+		//make the new node connect to whatever top is pointing to
+		nn->next = top;
+
+		//make top point to the newest top node
+		top = nn;
+	}
+}
+
+string handlePop(Node*& top) {
+	if (top) {
+
+		//make a temp so that we can delete
+		Node* temp = top;
+
+		//make top traverse to the next node
+		top = top->next;
+
+		//get data from temp
+		string data = temp->data;
+
+		//delete temp
+		delete temp;
+
+		//return data
+		return data;
+	}
+	else {
+		return "\0";
+	}
+
+}
+
+
+int handlePrecedence(const string& character) {
+	int precedence = -1;
+
+	if (character == "(" || character == ")") {
+		precedence = 0;
+	}
+
+	if (character == "+" || character == "-") {
+		precedence = 1;
+	}
+	if (character == "*" || character == "/") {
+		precedence = 2;
+	}
+
+	return precedence;
+
 }
