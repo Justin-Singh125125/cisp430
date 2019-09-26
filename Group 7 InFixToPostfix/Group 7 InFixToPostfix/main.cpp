@@ -95,6 +95,13 @@ string handleExpressionConversion(const string& expression) {
 						delete temp;
 
 					}
+					else if (current->data == "+" && nn->data == "*") {
+						//make top point to the new node
+						top = nn;
+
+						//link the new node to the old node
+						top->next = current;
+					}
 
 					current = current->next;
 				}
