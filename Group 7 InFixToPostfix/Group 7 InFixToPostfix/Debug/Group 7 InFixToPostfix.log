@@ -1,3 +1,3 @@
 ﻿  main.cpp
-C:\Users\chaos\Desktop\cisp430\Group 7 InFixToPostfix\Group 7 InFixToPostfix\main.cpp(52): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chaos\Desktop\cisp430\Group 7 InFixToPostfix\Group 7 InFixToPostfix\main.cpp(57): warning C4018: '<': signed/unsigned mismatch
   Group 7 InFixToPostfix.vcxproj -> C:\Users\chaos\Desktop\cisp430\Group 7 InFixToPostfix\Debug\Group 7 InFixToPostfix.exe
