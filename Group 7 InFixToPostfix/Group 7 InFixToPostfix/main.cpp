@@ -3,127 +3,243 @@
 #include <fstream>
 using namespace std;
 
-struct Node {
-	string data;
-	Node* next;
+struct Node
+{
+	char data;
+	Node *next;
 };
 
-string handleReadFile();
-string handleExpressionConversion(const string& expression);
+void handleReadFile(char *expression);
+void handleExpressionConversion(char *expression, char *convertedExpression);
+char handlePop(Node *&top);
+void handlePush(Node *&top, char data);
+int handlePrecedence(char character);
+/*
+
+
+
+
+
+
+int handlePrecedence(Node*& top);
+
+*/
 
 int main()
 {
-	//create a string that is going to hold the expression
-	string expression = handleReadFile();
+	//character array to hold the first line from the text file
+	char expression[255];
 
-	//convert the string to postfix
-	string convertedExpression = handleExpressionConversion(expression);
+	//read the first line of the text file and fill the expression array
+	handleReadFile(expression);
 
-	cout << "convertedExpression: " << convertedExpression << endl;
+	cout << "expression read: " << expression << endl;
+	//create a variable to hold the converted expression
+	char convertedExpression[255];
+
+	//convert the expression to postfix
+	handleExpressionConversion(expression, convertedExpression);
 }
 
-string handleReadFile() {
-
-	//connect to outside file
+void handleReadFile(char *expression)
+{
+	//create connection to text file
 	ifstream read("input.txt");
 
-	//create a string to hold data from text file
-	string data;
-
 	//read the first line from the text file
-	read >> data;
+	read >> expression;
 
-	//close the file
+	//close the connectiont to file
 	read.close();
-
-	//return the first line that is read
-	return data;
 }
 
-string handleExpressionConversion(const string& expression) {
+void handleExpressionConversion(char *expression, char *convertedExpression)
+{
 
-	//creating a stack structure to handle conversion
-	Node* top = NULL;
+	//create a string so we can concatenate easily
+	string stringExpression = "";
 
-	//create a current to keep track of where we are at on the stack
-	Node* current = NULL;
+	//create a stack
+	Node *top = NULL;
 
+	for (int i = 0; i < strlen(expression); i++)
+	{
 
+		if (expression[i] == '(' || expression[i] == ')' || expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/')
+		{
 
-	//create a string for the converted expression
-	string convertedExpression = "";
+			//check if stack is empty
+			if (!top)
+			{
 
-
-	for (int i = 0; i < expression.length(); i++) {
-
-		//if the current character is one of the operators
-		if (expression[i] == '(' || expression[i] == ')' || expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/') {
-		
-			//if there is nothing on stack, just push the first operator
-			if (!top) {
-				top = new Node;
-				top->data = expression[i];
-				top->next = NULL;
-
-				//make current point to the first top node
-				current = top;
+				//push the current expression character
+				handlePush(top, expression[i]);
 			}
-			else {
-				//make current point to top everytime
-				current = top;
+			else
+			{
 
-				//now we need to do a series of checks
-				//check whatever top is pointing to
-				Node* nn = new Node;
-				nn->data = expression[i];
-				nn->next = NULL;
-			
-				while (current) {
+				if (expression[i] == ')')
+				{
+					//pop the rest of the data off the stack
+					while (top)
+					{
 
-					//
-					if ((current->data == "+" && nn->data == "+") || (current->data == "+" && nn->data == "-") || (current->data == "-" && nn->data == "-") || (current->data == "-" && nn->data == "+")) {
-						
-						//make a temp point to current
-						Node* temp = current;
+						//pop off stack
+						char currentPop = handlePop(top);
 
-						//make current and top point to the new nn
-						top = current = nn;
+						cout << "current pop: " << currentPop << endl;
+						cout << "string before: " << stringExpression << endl;
+						bool isBad = false;
 
-						//when this happens, we have to pop and add to the current expression
-						convertedExpression += temp->data;
+						if (currentPop == '(' || currentPop == ')')
+						{
 
-						delete temp;
+							isBad = true;
+						}
 
+						if (!isBad)
+						{
+							stringExpression += currentPop;
+						}
+
+						cout << "string after: " << stringExpression << endl;
 					}
-					else if (current->data == "+" && nn->data == "*") {
-						//make top point to the new node
-						top = nn;
-
-						//link the new node to the old node
-						top->next = current;
-					}
-
-					current = current->next;
 				}
+				else
+				{
 
+					//track precedence
+					int currentTopPrecedence = handlePrecedence(top->data);
+					int currentExpressionPrecedence = handlePrecedence(expression[i]);
 
+					//condition if precendence is the same
+					if (currentTopPrecedence == currentExpressionPrecedence || currentTopPrecedence > currentExpressionPrecedence)
+					{
+
+						bool stop = false;
+						while (((currentTopPrecedence == currentExpressionPrecedence) || (currentTopPrecedence > currentExpressionPrecedence)) && !stop)
+						{
+
+							//pop off stack
+							char currentPop = handlePop(top);
+
+							if (currentPop != '(' || currentPop != ')')
+							{
+								stringExpression += currentPop;
+							}
+
+							//set the current top variable to the next variable that is on stack
+							if (!top)
+							{
+								stop = true;
+							}
+						}
+
+						//when the while loop ends, we push back the current expression onto the stack
+						handlePush(top, expression[i]);
+					}
+					else
+					//if whatever is on the stack has lower precedence than the current expression
+					{
+
+						handlePush(top, expression[i]);
+					}
+				}
 			}
 		}
-		//if the current character is not an operator, just append it to the list
-		else {
-			convertedExpression += expression[i];
+		else
+		{
+			stringExpression += expression[i];
 		}
 	}
 
-	//since we hit the end of the expression, we now have to pop everything from stack if there is any
+	//pop the rest of the data off the stack
+	while (top)
+	{
 
-	while (top) {
-		convertedExpression += top->data;
-		top = top->next;
+		char currentPop = handlePop(top);
+		if (currentPop != '(' || currentPop != ')')
+		{
+			stringExpression += currentPop;
+		}
 	}
 
+	cout << "converted expression: " << stringExpression << endl;
+}
 
+char handlePop(Node *&top)
+{
+	if (top)
+	{
 
+		//make a temp so that we can delete
+		Node *temp = top;
 
-	return convertedExpression;
+		//make top traverse to the next node
+		top = top->next;
+
+		//get data from temp
+		char data = temp->data;
+
+		//delete temp
+		delete temp;
+
+		//return data
+		return data;
+	}
+	else
+	{
+		return '\0';
+	}
+}
+
+void handlePush(Node *&top, char data)
+{
+
+	//if this is the first node to be at top
+	if (!top)
+	{
+
+		//make top point to a new node
+		top = new Node;
+		top->data = data;
+		top->next = NULL;
+	}
+
+	//if an node already exists in top
+	else
+	{
+
+		//create a brand new node
+		Node *nn = new Node;
+
+		//fill node with data
+		nn->data = data;
+
+		//make the new node connect to whatever top is pointing to
+		nn->next = top;
+
+		//make top point to the newest top node
+		top = nn;
+	}
+}
+
+int handlePrecedence(char character)
+{
+
+	int precedence = -1;
+
+	if (character == '(' || character == ')')
+	{
+		precedence = 0;
+	}
+	if (character == '+' || character == '-')
+	{
+		precedence = 1;
+	}
+	if (character == '*' || character == '/')
+	{
+		precedence = 2;
+	}
+	return precedence;
 }
