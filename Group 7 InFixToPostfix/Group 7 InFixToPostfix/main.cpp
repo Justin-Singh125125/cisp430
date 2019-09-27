@@ -81,20 +81,20 @@ void handleExpressionConversion(char* expression, char* convertedExpression) {
 
 
 				//condition if precendence is the same
-				if (currentTopPrecedence == currentExpressionPrecedence) {
+				if (currentTopPrecedence == currentExpressionPrecedence || currentTopPrecedence > currentExpressionPrecedence) {
 					
 					bool stop = false;
-					while ((currentTopPrecedence == currentExpressionPrecedence) && !stop) {
+					while (((currentTopPrecedence == currentExpressionPrecedence) || (currentTopPrecedence > currentExpressionPrecedence)) && !stop) {
 
 						//pop off stack
 						char currentPop = handlePop(top);
 
-						//a check to get ride of parenthesis
+						
 						if (currentPop != '(' || currentPop != ')') {
 							stringExpression += currentPop;
 						}
 						
-
+					
 						//set the current top variable to the next variable that is on stack
 						if (!top) {
 							stop = true;
@@ -103,6 +103,12 @@ void handleExpressionConversion(char* expression, char* convertedExpression) {
 
 					//when the while loop ends, we push back the current expression onto the stack
 					handlePush(top,expression[i]);
+				}
+				else
+				//if whatever is on the stack has lower precedence than the current expression
+				{
+
+					handlePush(top, expression[i]);
 				}
 
 			}
@@ -114,7 +120,12 @@ void handleExpressionConversion(char* expression, char* convertedExpression) {
 
 	//pop the rest of the data off the stack
 	while (top) {
-		stringExpression += handlePop(top);
+
+		char currentPop = handlePop(top);
+		if (currentPop != '(' || currentPop != ')') {
+			stringExpression += currentPop;
+		}
+
 	}
 
 	cout << "converted expression: " << stringExpression << endl;
