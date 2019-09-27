@@ -4,87 +4,154 @@
 using namespace std;
 
 struct Node {
-	string data;
+	char data;
 	Node* next;
 };
 
-string handleReadFile();
-string handleExpressionConversion(const string& expression);
+void handleReadFile(char * expression);
+void handleExpressionConversion(char* expression,char* convertedExpression);
+char handlePop(Node*& top);
+void handlePush(Node*& top, char data);
+int handlePrecedence(char character);
+/*
 
-void handlePush(Node*& top, const string& data);
-string handlePop(Node*& top);
 
-int handlePrecedence(const string& character);
+
+
+
+
+int handlePrecedence(Node*& top);
+
+*/
 
 
 int main()
 {
-	//create a string that is going to hold the expression
-	string expression = handleReadFile();
+	//character array to hold the first line from the text file
+	char expression[255];
 
-	//convert the string to postfix
-	string convertedExpression = handleExpressionConversion(expression);
+	//read the first line of the text file and fill the expression array
+	handleReadFile(expression);
 
-	cout << "convertedExpression: " << convertedExpression << endl;
+	//create a variable to hold the converted expression
+	char convertedExpression[255];
+
+	//convert the expression to postfix
+	handleExpressionConversion(expression, convertedExpression);
+
+
+
 }
 
-string handleReadFile() {
-
-	//connect to outside file
+void handleReadFile(char * expression) {
+	//create connection to text file
 	ifstream read("input.txt");
 
-	//create a string to hold data from text file
-	string data;
-
 	//read the first line from the text file
-	read >> data;
+	read >> expression;
 
-	//close the file
+	//close the connectiont to file
 	read.close();
-
-	//return the first line that is read
-	return data;
 }
 
-string handleExpressionConversion(const string& expression) {
-	string convertedExpression = "";
+void handleExpressionConversion(char* expression, char* convertedExpression) {
+
+	//create a string so we can concatenate easily
+	string stringExpression = "";
 
 	//create a stack 
 	Node* top = NULL;
 
-	for (int i = 0; i < expression.length(); i++) {
+
+	for (int i = 0; i < strlen(expression); i++) {
 
 		if (expression[i] == '(' || expression[i] == ')' || expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/') {
-			
+
 			//check if stack is empty
-			if (handlePop(top) == "\0") {
-				handlePush(top, expression.at(i));
+			if (!top) {
+
+				//push the current expression character
+				handlePush(top, expression[i]);
 			}
 			else {
-				
+
 				//track precedence
 				int currentTopPrecedence = handlePrecedence(top->data);
-				int currentExpressionPrecedence = handlePrecedence(expression[i])
+				int currentExpressionPrecedence = handlePrecedence(expression[i]);
+
+
+				//condition if precendence is the same
+				if (currentTopPrecedence == currentExpressionPrecedence) {
+					
+					bool stop = false;
+					while ((currentTopPrecedence == currentExpressionPrecedence) && !stop) {
+
+						//pop off stack
+						char currentPop = handlePop(top);
+
+						//a check to get ride of parenthesis
+						if (currentPop != '(' || currentPop != ')') {
+							stringExpression += currentPop;
+						}
+						
+
+						//set the current top variable to the next variable that is on stack
+						if (!top) {
+							stop = true;
+						}
+					}
+
+					//when the while loop ends, we push back the current expression onto the stack
+					handlePush(top,expression[i]);
+				}
+
 			}
 		}
 		else {
-			convertedExpression += expression[i];
+			stringExpression += expression[i];
 		}
 	}
 
 	//pop the rest of the data off the stack
 	while (top) {
-		convertedExpression += handlePop(top);
+		stringExpression += handlePop(top);
 	}
+
+	cout << "converted expression: " << stringExpression << endl;
+
+	
 	
 
-
-	return convertedExpression;
+	
 }
 
+char handlePop(Node*& top) {
+	if (top) {
 
-void handlePush(Node*& top, const string& data)
+		//make a temp so that we can delete
+		Node* temp = top;
+
+		//make top traverse to the next node
+		top = top->next;
+
+		//get data from temp
+		char data = temp->data;
+
+		//delete temp
+		delete temp;
+
+		//return data
+		return data;
+	}
+	else {
+		return '\0';
+	}
+
+}
+
+void handlePush(Node*& top, char data)
 {
+	cout << "data push: " << data << endl;
 
 	//if this is the first node to be at top
 	if (!top)
@@ -114,44 +181,72 @@ void handlePush(Node*& top, const string& data)
 	}
 }
 
-string handlePop(Node*& top) {
-	if (top) {
+/*
+string handleExpressionConversion(const string& expression) {
+	string convertedExpression = "";
 
-		//make a temp so that we can delete
-		Node* temp = top;
+	//create a stack 
+	Node* top = NULL;
 
-		//make top traverse to the next node
-		top = top->next;
+	for (int i = 0; i < expression.length(); i++) {
 
-		//get data from temp
-		string data = temp->data;
+		if (expression[i] == '(' || expression[i] == ')' || expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/') {
+			
+			//check if stack is empty
+			if (handlePop(top) == "\0") {
+				handlePush(top, expression[i]);
 
-		//delete temp
-		delete temp;
+			}
+			else {
+				
+				//track precedence
+				
+			
+				cout << "top: " << top->next << endl;
+				//cout << "current top data: " << test << endl;
+				//int currentTopPrecedence = handlePrecedence();
 
-		//return data
-		return data;
+				//cout << "currentTopPrecedence: " << currentTopPrecedence << endl;
+				//int currentExpressionPrecedence = handlePrecedence(&expression[i]);
+			}
+		}
+		else {
+			convertedExpression += expression[i];
+		}
 	}
-	else {
-		return "\0";
-	}
 
+	//pop the rest of the data off the stack
+	//while (top) {
+	//	convertedExpression += handlePop(top);
+	//}
+	
+
+
+	return convertedExpression;
 }
 
 
-int handlePrecedence(const string& character) {
+
+
+
+
+*/
+
+
+int handlePrecedence(char character) {
+
 	int precedence = -1;
 
-	if (character == "(" || character == ")") {
+	if (character == '(' || character == ')') {
 		precedence = 0;
 	}
-
-	if (character == "+" || character == "-") {
+	if (character == '+' || character == '-') {
 		precedence = 1;
 	}
-	if (character == "*" || character == "/") {
+	if (character == '*' || character == '/') {
 		precedence = 2;
 	}
+	
 
 	return precedence;
 
