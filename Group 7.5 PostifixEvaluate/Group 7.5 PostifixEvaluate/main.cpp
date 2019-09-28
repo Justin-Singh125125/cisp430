@@ -1,25 +1,25 @@
-#include <iostream>  
-#include <stdlib.h>  
+#include <iostream>
+#include <stdlib.h>
 #include <string>
 #include <fstream>
 #include <sstream>
 
 using namespace std;
 
-// Stack type  
+// Stack type
 struct Node
 {
 	int data;
-	Node* next;
+	Node *next;
 };
 
-int handlePop(Node*& top)
+int handlePop(Node *&top)
 {
 	if (top)
 	{
 
 		//make a temp so that we can delete
-		Node* temp = top;
+		Node *temp = top;
 
 		//make top traverse to the next node
 		top = top->next;
@@ -35,8 +35,7 @@ int handlePop(Node*& top)
 	}
 }
 
-
-void handlePush(Node*& top, int data)
+void handlePush(Node *&top, int data)
 {
 	//if this is the first node to be at top
 	if (!top)
@@ -53,7 +52,7 @@ void handlePush(Node*& top, int data)
 	{
 
 		//create a brand new node
-		Node* nn = new Node;
+		Node *nn = new Node;
 
 		//fill node with data
 		nn->data = data;
@@ -66,18 +65,21 @@ void handlePush(Node*& top, int data)
 	}
 }
 
-int evaluatedExpression(char* expression) {
+int evaluatedExpression(char *expression)
+{
 
 	//create a stack
-	Node* stack = NULL;
+	Node *stack = NULL;
 
 	bool isFirst = true;
 
 	//go until the length of the expression
-	for (int i = 0; i < strlen(expression); i++) {
+	for (int i = 0; i < strlen(expression); i++)
+	{
 
 		//if  any of the expressions characters are an operand, we are going to pop two from the stack
-		if (expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/') {
+		if (expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/')
+		{
 
 			//we are going to pop two pieces off of the stack and convert them to integers
 
@@ -95,44 +97,46 @@ int evaluatedExpression(char* expression) {
 			x >> b;
 			y >> a;
 
-
 			cout << "b: " << b << endl;
 			cout << "a: " << a << endl;
 
-
 			//a variable to hold the result
 			int result = 0;
-			if (expression[i] == '+') {
+			if (expression[i] == '+')
+			{
 				result = a + b;
 			}
-			if (expression[i] == '-') {
+			if (expression[i] == '-')
+			{
 				result = a - b;
 			}
-			if (expression[i] == '*') {
+			if (expression[i] == '*')
+			{
 				result = a * b;
 			}
-			if (expression[i] == '/') {
+			if (expression[i] == '/')
+			{
 				result = a / b;
 			}
 
 			cout << "result: " << (result) << endl;
-
 
 			//push the result back on the stack
 			handlePush(stack, result);
 		}
 
 		//if any of the characters are not operands, we are going to push onto the stack
-		else {
+		else
+		{
 			handlePush(stack, expression[i]);
 		}
 	}
 
-
 	return -1;
 }
 
-int main() {
+int main()
+{
 
 	//create a variable to read data from text file
 	char expression[255];
@@ -144,8 +148,6 @@ int main() {
 	read >> expression;
 
 	int result = evaluatedExpression(expression);
-
-
 
 	return 0;
 }
