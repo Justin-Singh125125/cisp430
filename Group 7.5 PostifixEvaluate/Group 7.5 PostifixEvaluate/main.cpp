@@ -67,7 +67,7 @@ void handlePush(Node *&top, int data)
 
 int evaluatedExpression(char *expression)
 {
-
+	int result=0;
 	//create a stack
 	Node *stack = NULL;
 
@@ -76,32 +76,26 @@ int evaluatedExpression(char *expression)
 	//go until the length of the expression
 	for (int i = 0; i < strlen(expression); i++)
 	{
-
 		//if  any of the expressions characters are an operand, we are going to pop two from the stack
 		if (expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/')
 		{
 
 			//we are going to pop two pieces off of the stack and convert them to integers
 
-			int b = 0, a = 0;
 
-			int str_1 = handlePop(stack);
-			int str_2 = handlePop(stack);
+			int b = int(handlePop(stack));
+			int a = int (handlePop(stack));
 
-			string s(1, str_1);
-			string t(1, str_2);
-
-			stringstream x(s);
-			stringstream y(t);
-
-			x >> b;
-			y >> a;
-
-			cout << "b: " << b << endl;
-			cout << "a: " << a << endl;
-
+			if (isFirst) {
+				b = b - 48;
+				a = a - 48;
+				isFirst = false;
+			}
+			else {
+				b = b - 48;
+			}
+	
 			//a variable to hold the result
-			int result = 0;
 			if (expression[i] == '+')
 			{
 				result = a + b;
@@ -119,7 +113,7 @@ int evaluatedExpression(char *expression)
 				result = a / b;
 			}
 
-			cout << "result: " << (result) << endl;
+
 
 			//push the result back on the stack
 			handlePush(stack, result);
@@ -131,8 +125,8 @@ int evaluatedExpression(char *expression)
 			handlePush(stack, expression[i]);
 		}
 	}
-
-	return -1;
+	result = handlePop(stack);
+	return result;
 }
 
 int main()
@@ -147,7 +141,11 @@ int main()
 	//read the line from the text file
 	read >> expression;
 
+	cout << "expression read from file: " << expression << endl;
+
 	int result = evaluatedExpression(expression);
+
+	cout << "expression result: " << result << endl;
 
 	return 0;
 }
