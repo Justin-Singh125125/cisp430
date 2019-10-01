@@ -7,77 +7,78 @@
 using namespace std;
 
 //doubly linked list data structure
-struct Node {
+struct Node
+{
 	string data;
-	Node* next;
-	Node* prev;
+	Node *next;
+	Node *prev;
 };
 
 //functions
-void handleReadFile(vector<string>& names, vector<string>& deleteNames) {
+void handleReadFile(vector<string> &names, vector<string> &deleteNames)
+{
 
 	//read from a text file
 	ifstream read("input.txt");
 
 	//read entire text file
-	while (read.good()) {
+	while (read.good())
+	{
 		string data;
 
 		getline(read, data);
 
 		//check if the current line of the text file has delete
 		//if it does, push data to deleteNames vector
-		if (!data.find("delete")) {
+		if (!data.find("delete"))
+		{
 
 			//push data to deleteNames vector while removing the delete word
-			deleteNames.push_back(data.erase(0,7));
+			deleteNames.push_back(data.erase(0, 7));
 		}
 
 		//if the current line does not contain a delete
-		else {
+		else
+		{
 
 			//push data to names array
 			names.push_back(data);
 		}
 	}
-
 }
 
-void handleDisplayVector(vector<string> list) {
-	for (vector<string>::iterator it = list.begin(); it != list.end(); it++) {
-		cout << *it << endl;
-	}
-}
+void handleDisplayList(Node *head)
+{
 
-void handleDisplayList(Node* head) {
-
-
-	while (head->next) {
+	while (head->next)
+	{
 		cout << "data: " << head->data << endl;
 
 		head = head->next;
 	}
 
-
 	cout << "data: " << head->data << endl;
 
 	cout << "==============\n";
-	while (head) {
+	while (head)
+	{
 		cout << "data: " << head->data << endl;
 
 		head = head->prev;
 	}
-
 }
 
-void handlePopulateList(Node*& head, vector<string> names) {
+void handlePopulateList(Node *&head, vector<string> names)
+{
 
-	Node* current = NULL;
+	Node *current = NULL;
 
-	for (vector<string>::iterator it = names.begin(); it != names.end(); it++) {
+	for (vector<string>::iterator it = names.begin(); it != names.end(); it++)
+	{
 
 		//if head is null
-		if (!head) {
+		if (!head)
+		{
 			head = new Node;
 			head->data = *it;
 			head->prev = NULL;
@@ -86,10 +87,11 @@ void handlePopulateList(Node*& head, vector<string> names) {
 			//set current to the head
 			current = head;
 		}
-		else {
+		else
+		{
 
 			//create a new node to connect
-			Node* nn = new Node;
+			Node *nn = new Node;
 			nn->data = *it;
 			nn->next = NULL;
 
@@ -101,50 +103,39 @@ void handlePopulateList(Node*& head, vector<string> names) {
 
 			//make current point to the new node
 			current = nn;
-
 		}
-
 	}
-
 }
 
-void erase(std::vector<string>& v, string str)
+void handleListDeletion(Node *&head, vector<string> deleteNames)
 {
-	std::vector<string>::iterator iter = v.begin();
 
-	while (iter != v.end())
+	for (vector<string>::iterator it = deleteNames.begin(); it != deleteNames.end(); it++)
 	{
-		if (*iter == str)
-			iter = v.erase(iter);
-		else
-			iter++;
-	}
 
-}
+		Node *current = head;
 
-void handleListDeletion(Node * &head, vector<string> deleteNames) {
-
-	for (vector<string>::iterator it = deleteNames.begin(); it != deleteNames.end(); it++) {
-
-		
-		Node* current = head;
-
-		while (current) {
+		while (current)
+		{
 
 			//check if any of the nodes are to delete
-			if (current->data == *it) {
+			if (current->data == *it)
+			{
 
 				//create a temp that is going to point to the node we want to delete
-				Node* temp = current;
+				Node *temp = current;
 				//a check for if its the first node
-				if (!head->next) {
-					
+				if (!head->next)
+				{
+
 					//set head and current to null
 					head = current = NULL;
 				}
-				else {
+				else
+				{
 					current->prev->next = current->next;
-					if (current->next) {
+					if (current->next)
+					{
 						current->next->prev = current->prev;
 					}
 					current = NULL;
@@ -152,15 +143,16 @@ void handleListDeletion(Node * &head, vector<string> deleteNames) {
 
 				delete temp;
 			}
-			else {
+			else
+			{
 				current = current->next;
 			}
 		}
 	}
-
 }
 
-int main() {
+int main()
+{
 
 	//declare a vector for the names
 	vector<string> names;
@@ -172,10 +164,10 @@ int main() {
 	handleReadFile(names, deleteNames);
 
 	//sort the names in abc order
-	sort(names.begin(), names.end(), less <>());
+	sort(names.begin(), names.end(), less<>());
 
 	//create the data structure
-	Node* head = NULL;
+	Node *head = NULL;
 
 	//populate the linked list
 	handlePopulateList(head, names);
