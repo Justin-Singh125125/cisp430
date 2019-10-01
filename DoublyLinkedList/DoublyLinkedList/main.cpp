@@ -29,8 +29,8 @@ void handleReadFile(vector<string>& names, vector<string>& deleteNames) {
 		//if it does, push data to deleteNames vector
 		if (!data.find("delete")) {
 
-			//push data to deleteNames vector
-			deleteNames.push_back(data);
+			//push data to deleteNames vector while removing the delete word
+			deleteNames.push_back(data.erase(0,7));
 		}
 
 		//if the current line does not contain a delete
@@ -111,11 +111,9 @@ void erase(std::vector<string>& v, string str)
 
 }
 
-void handleListDeletion(Node*& head, vector<string> deleteNames) {
+void handleListDeletion(Node * &head, vector<string> deleteNames) {
 
 	for (vector<string>::iterator it = deleteNames.begin(); it != deleteNames.end(); it++) {
-
-		string deleteName = *it;
 
 		//if there is only one node
 		if (!head->next) {
@@ -128,13 +126,10 @@ void handleListDeletion(Node*& head, vector<string> deleteNames) {
 
 			while (current) {
 
-				cout << "delete name: " << deleteName << endl;
-				cout << "current data: " << current->data << endl;
-
 				//if a node matches the name we are trying to delete
-				if (!deleteName.find(current->data)){
+				if (current->data == *it) {
 
-					cout << "test delete: " << current->data << endl<<endl;
+					cout << "test delete: " << current->data << endl;
 					//if there are only two nodes
 					if (!current->next->next) {
 
@@ -187,16 +182,12 @@ int main() {
 	//populate the linked list
 	handlePopulateList(head, names);
 
-	//handleDisplayList(head);
-
-	erase(deleteNames, "delete ");
-
-	handleDisplayVector(deleteNames);
-	//handleDeleting
-	//handleListDeletion(head, deleteNames);
-
 	
 
+
+	handleListDeletion(head, deleteNames);
+
+	handleDisplayList(head);
 
 	return 0;
 }
