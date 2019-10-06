@@ -31,6 +31,7 @@ void pop(Node*& top) {
 	}
 	else {
 		cout << "stack is empty" << endl;
+		return;
 	}
 }
 
