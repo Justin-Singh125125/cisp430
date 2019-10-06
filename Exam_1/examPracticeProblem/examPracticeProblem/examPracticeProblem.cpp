@@ -21,6 +21,8 @@ void add(Node*& head, Node *& tail, int data) {
 	}
 	else {
 		tail->next = new Node;
+
+		tail->next->prev = tail;
 		tail = tail->next;
 		tail->data = data;
 		tail->next = NULL;
@@ -28,10 +30,10 @@ void add(Node*& head, Node *& tail, int data) {
 		
 }
 
-void display(Node* head) {
-	while (head) {
-		cout << head->data << endl;
-		head = head->next;
+void display(Node* tail) {
+	while (tail) {
+		cout << tail->data << endl;
+		tail = tail->prev;;
 	}
 }
 
@@ -42,15 +44,30 @@ void delNode(int nodeNumber, Node*& head, Node*& tail) {
 		return;
 	}
 
-	if (nodeNumber == 1) {
-		Node* temp = head;
+	Node* temp = head;
+	for (int i = 1; i < nodeNumber; i++) {
+		temp = temp->next;
+	}
+
+	if (!temp->prev) {
 		head->next->prev = NULL;
 		head = head->next;
-		delete temp;
+		
+	}
+
+	else if (temp == tail) {
+		tail = tail->prev;
+		temp->prev->next = NULL;
 	}
 	else if (head == tail) {
-
+		head = tail = NULL;
 	}
+	else {
+		temp->prev->next = temp->next;
+		temp->next->prev = temp->prev;
+	}
+
+	delete temp;
 }
 int main()
 {
@@ -63,6 +80,15 @@ int main()
 	add(head, tail, 4);
 
 	display(head);
+
+	cout << "deleting node: " << endl;
+	delNode(3, head, tail);
+
+
+	display(tail);
+
+
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
