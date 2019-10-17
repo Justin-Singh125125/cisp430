@@ -8,9 +8,22 @@ struct Node {
 };
 
 struct Queue {
-	Node *front;
-	Node *rear;
+	Node* front;
+	Node* rear;
 };
+
+const int SIZE = 10;
+
+
+int getMax(int arr[])
+{
+	int mx = arr[0];
+	for (int i = 1; i < SIZE; i++)
+		if (arr[i] > mx)
+			mx = arr[i];
+	return mx;
+}
+
 
 void enqueue(Queue & q, int data) {
 
@@ -19,7 +32,7 @@ void enqueue(Queue & q, int data) {
 		q.rear = q.front;
 		q.front->data = data;
 		q.front->next = NULL;
-	
+
 	}
 	else {
 		//we are going to be adding at the rear everytime for queue
@@ -30,7 +43,7 @@ void enqueue(Queue & q, int data) {
 	}
 }
 
-int dequeue(Queue &q) {
+int dequeue(Queue & q) {
 
 	if (!q.front) {
 		return NULL;
@@ -51,24 +64,46 @@ int dequeue(Queue &q) {
 
 }
 
+
+void radixSort(Queue* q, int arr[]) {
+
+	//find the maximum number to know the number of digits we going to go by
+	int m = getMax(arr);
+
+	//number of passes
+	for (int n = 1; n <= m; n *= 10) {
+
+		//number of items in array
+		for (int i = 0; i < SIZE; i++) {
+
+			int queueIndex = arr[i] % (10 * n);
+			queueIndex /= n;
+
+			enqueue(q[queueIndex], arr[i]);
+		}
+
+
+	}
+}
+
 int main() {
 
 	//create an array of queues
-	Queue q[10];
+	Queue q[SIZE];
+
+	//an array of values to sort
+	int arr[SIZE] = { 170, 45, 75, 90, 802, 2, 24, 66, 11, 9 };
 
 	//initalize all queues to NULL
-
 	for (int i = 0; i < 10; i++) {
 		q[i].front = q[i].rear = NULL;
 	}
 
-	enqueue(q[0], 5);
-
-	cout << "test: " << dequeue(q[0])<< endl;
+	radixSort(q, arr);
 
 
 
-	
+
 
 	return 0;
 }
