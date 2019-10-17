@@ -57,7 +57,6 @@ int dequeue(Queue & q) {
 	else {
 		q.front = q.front->next;
 		value = temp->data;
-		cout << "value: " << value;
 	}
 	delete temp;
 	return value;
@@ -82,7 +81,16 @@ void radixSort(Queue* q, int arr[]) {
 			enqueue(q[queueIndex], arr[i]);
 		}
 
+		//now we need to dequeue and put the items into the array
 
+		int count = 0;
+		for (int i = 0; i < SIZE; i++) {
+			 
+			while (q[i].front != NULL) {
+				arr[count] = dequeue(q[i]);
+				count++;
+			}
+		}
 	}
 }
 
@@ -102,8 +110,9 @@ int main() {
 	radixSort(q, arr);
 
 
-
-
+	for (int i = 0; i < SIZE; i++) {
+		cout << arr[i] << endl;
+	}
 
 	return 0;
 }
