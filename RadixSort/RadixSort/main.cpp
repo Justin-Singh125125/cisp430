@@ -2,18 +2,19 @@
 
 using namespace std;
 
-struct Node {
-	Node* next;
+struct Node
+{
+	Node *next;
 	int data;
 };
 
-struct Queue {
-	Node* front;
-	Node* rear;
+struct Queue
+{
+	Node *front;
+	Node *rear;
 };
 
 const int SIZE = 10;
-
 
 int getMax(int arr[])
 {
@@ -24,17 +25,18 @@ int getMax(int arr[])
 	return mx;
 }
 
+void enqueue(Queue &q, int data)
+{
 
-void enqueue(Queue & q, int data) {
-
-	if (!q.front) {
+	if (!q.front)
+	{
 		q.front = new Node;
 		q.rear = q.front;
 		q.front->data = data;
 		q.front->next = NULL;
-
 	}
-	else {
+	else
+	{
 		//we are going to be adding at the rear everytime for queue
 		q.rear->next = new Node;
 		q.rear = q.rear->next;
@@ -43,37 +45,42 @@ void enqueue(Queue & q, int data) {
 	}
 }
 
-int dequeue(Queue & q) {
+int dequeue(Queue &q)
+{
 
-	if (!q.front) {
+	if (!q.front)
+	{
 		return NULL;
 	}
 	int value = 0;
-	Node* temp = q.front;
-	if (q.front == q.rear) {
+	Node *temp = q.front;
+	if (q.front == q.rear)
+	{
 		q.front = q.rear = NULL;
 		value = temp->data;
 	}
-	else {
+	else
+	{
 		q.front = q.front->next;
 		value = temp->data;
 	}
 	delete temp;
 	return value;
-
 }
 
-
-void radixSort(Queue* q, int arr[]) {
+void radixSortAscending(Queue *q, int arr[])
+{
 
 	//find the maximum number to know the number of digits we going to go by
 	int m = getMax(arr);
 
 	//number of passes
-	for (int n = 1; n <= m; n *= 10) {
+	for (int n = 1; n <= m; n *= 10)
+	{
 
 		//number of items in array
-		for (int i = 0; i < SIZE; i++) {
+		for (int i = 0; i < SIZE; i++)
+		{
 
 			int queueIndex = arr[i] % (10 * n);
 			queueIndex /= n;
@@ -84,9 +91,11 @@ void radixSort(Queue* q, int arr[]) {
 		//now we need to dequeue and put the items into the array
 
 		int count = 0;
-		for (int i = 0; i < SIZE; i++) {
-			 
-			while (q[i].front != NULL) {
+		for (int i = 0; i < SIZE; i++)
+		{
+
+			while (q[i].front != NULL)
+			{
 				arr[count] = dequeue(q[i]);
 				count++;
 			}
@@ -94,25 +103,74 @@ void radixSort(Queue* q, int arr[]) {
 	}
 }
 
-int main() {
+void radixSortDecending(Queue *q, int arr[])
+{
+
+	//find the maximum number to know the number of digits we going to go by
+	int m = getMax(arr);
+
+	//number of passes
+	for (int n = 1; n <= m; n *= 10)
+	{
+
+		//number of items in array
+		for (int i = 0; i < SIZE; i++)
+		{
+
+			int queueIndex = arr[i] % (10 * n);
+			queueIndex /= n;
+
+			enqueue(q[queueIndex], arr[i]);
+		}
+
+		//now we need to dequeue and put the items into the array
+
+		int count = 0;
+		for (int i = SIZE - 1; i >= 0; i--)
+		{
+
+			while (q[i].front != NULL)
+			{
+				arr[count] = dequeue(q[i]);
+				count++;
+			}
+		}
+	}
+}
+
+int main()
+{
 
 	//create an array of queues
 	Queue q[SIZE];
 
 	//an array of values to sort
-	int arr[SIZE] = { 170, 45, 75, 90, 802, 2, 24, 66, 11, 9 };
+	int arr1[SIZE] = {170, 45, 75, 90, 802, 2, 24, 66, 11, 9};
+	int arr2[SIZE] = {170, 45, 75, 90, 802, 2, 24, 66, 11, 9};
 
-	//initalize all queues to NULL
-	for (int i = 0; i < 10; i++) {
+	//initalize all queues and stacks to NULL
+	for (int i = 0; i < 10; i++)
+	{
 		q[i].front = q[i].rear = NULL;
 	}
 
-	radixSort(q, arr);
+	radixSortAscending(q, arr1);
 
-
-	for (int i = 0; i < SIZE; i++) {
-		cout << arr[i] << endl;
+	cout << "Ascending Order: ";
+	for (int i = 0; i < SIZE; i++)
+	{
+		cout << arr1[i] << " ";
 	}
+	cout << endl;
+
+	radixSortDecending(q, arr2);
+
+	cout << "Descending Order: ";
+	for (int i = 0; i < SIZE; i++)
+	{
+		cout << arr2[i] << " ";
+	}
+	cout << endl;
 
 	return 0;
 }
