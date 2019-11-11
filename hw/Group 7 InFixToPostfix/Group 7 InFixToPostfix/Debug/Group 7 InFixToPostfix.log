@@ -1,0 +1,4 @@
+﻿  main.cpp
+C:\Users\chaos\Desktop\cisp430\Group 7 InFixToPostfix\Group 7 InFixToPostfix\main.cpp(65): warning C4018: '<': signed/unsigned mismatch
+  LINK : C:\Users\chaos\Desktop\cisp430\Group 7 InFixToPostfix\Debug\Group 7 InFixToPostfix.exe not found or not built by the last incremental link; performing full link
+  Group 7 InFixToPostfix.vcxproj -> C:\Users\chaos\Desktop\cisp430\Group 7 InFixToPostfix\Debug\Group 7 InFixToPostfix.exe

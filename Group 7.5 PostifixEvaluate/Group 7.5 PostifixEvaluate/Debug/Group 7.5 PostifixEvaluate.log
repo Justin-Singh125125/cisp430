@@ -1,4 +1,0 @@
-﻿  main.cpp
-C:\Users\chaos\Desktop\cisp430\Group 7.5 PostifixEvaluate\Group 7.5 PostifixEvaluate\main.cpp(77): warning C4018: '<': signed/unsigned mismatch
-C:\Users\chaos\Desktop\cisp430\Group 7.5 PostifixEvaluate\Group 7.5 PostifixEvaluate\main.cpp(36): warning C4715: 'handlePop': not all control paths return a value
-  Group 7.5 PostifixEvaluate.vcxproj -> C:\Users\chaos\Desktop\cisp430\Group 7.5 PostifixEvaluate\Debug\Group 7.5 PostifixEvaluate.exe
