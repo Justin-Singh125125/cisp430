@@ -12,19 +12,89 @@ struct Node {
 
 struct BinaryTree {
 	string name;
-	Node* names;
+	Node* head;
 	BinaryTree* left;
 	BinaryTree* right;
 };
 
-void treeAdd(BinaryTree*& leaf, string name) {
-	//create a tree
-	leaf = new BinaryTree;
-	leaf->left = leaf->right = NULL;
-	leaf->name = name;
+
+int getNumListDuplicates(Node* head) {
+	int count = 0;
+	while (head) {
+		count++;
+		head = head->next;
+	}
+
+	return count;
 }
 
-void treeInsert(BinaryTree*& leaf, string name) {
+void listAdd(Node*& head, string name) {
+
+	Node* curr = head;
+
+	if (!head) {
+		head = new Node;
+		head->name = name;
+		head->next = NULL;
+		
+		cout << "test" << endl;
+	}
+
+	else {
+		
+		while (curr->next) {
+			curr = curr->next;
+		}
+
+		curr->next = new Node;
+		curr->next->name = name;
+		curr->next->next = NULL;
+
+	}
+}
+
+
+BinaryTree* treeSearch(BinaryTree*& root, string key, bool state)
+{
+	// Base Cases: root is null or key is present at root 
+	if (root == NULL || root->name == key) {
+		state ? cout << root->name <<endl: cout << "";
+		return root;
+	}
+		
+
+	// Key is greater than root's key 
+	if (root->name < key) {
+		state ? cout << root->name << endl : cout << "";
+		return treeSearch(root->left, key, false);
+
+	}
+	
+	// Key is smaller than root's key 
+	state ? cout << root->name << endl : cout << "";
+	return treeSearch(root->right, key, false);
+}
+
+void treeAdd(BinaryTree*& leaf, string name) {
+
+	BinaryTree* temp = treeSearch(leaf, name, false);
+
+	if (!temp) {
+		//create a tree
+		leaf = new BinaryTree;
+		leaf->left = leaf->right = NULL;
+		leaf->head = NULL;
+		leaf->name = name;
+
+	}
+	else {
+		listAdd(temp->head, name);
+	}
+}
+
+	
+
+void treeInsert(BinaryTree * &leaf, string name) {
 
 	//check if there is nothing in the tree
 	if (!leaf) {
@@ -53,6 +123,7 @@ void readFile() {
 
 	//create the root of out tree
 	BinaryTree* root = NULL;
+	
 
 	while (read.good()) {
 		read >> name;
@@ -63,7 +134,26 @@ void readFile() {
 
 	}
 
-	BinaryTree* temp = root;
+	
+
+	cout << "NAMES INSERTED...\n\n";
+
+	string searchName = "";
+	cout << "ENTER A NAME TO SEARCH FOR ";
+	cin >> searchName;
+
+	BinaryTree* temp = treeSearch(root, searchName, true);
+
+	if (temp) {
+		cout << "found: ";
+		cout << temp->name << endl;
+
+		cout << "THERE ARE " << getNumListDuplicates(temp->head) << "DUPLICATES \n";
+
+	}
+	else {
+		cout << "SORRY THAT NAME IS NOT IN THE TREE \n";
+	}
 
 
 
