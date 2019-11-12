@@ -30,18 +30,17 @@ int getNumListDuplicates(Node* head) {
 
 void listAdd(Node*& head, string name) {
 
-	Node* curr = head;
 
+	
 	if (!head) {
 		head = new Node;
 		head->name = name;
 		head->next = NULL;
-		
-		cout << "test" << endl;
+
 	}
 
 	else {
-		
+		Node* curr = head;
 		while (curr->next) {
 			curr = curr->next;
 		}
@@ -54,47 +53,47 @@ void listAdd(Node*& head, string name) {
 }
 
 
-BinaryTree* treeSearch(BinaryTree*& root, string key, bool state)
+BinaryTree* treeSearch(BinaryTree* root, string key, bool state)
 {
 	// Base Cases: root is null or key is present at root 
 	if (root == NULL || root->name == key) {
-		state ? cout << root->name <<endl: cout << "";
+		state ? cout << root->name << endl : cout << "";
 		return root;
 	}
-		
+
 
 	// Key is greater than root's key 
 	if (root->name < key) {
 		state ? cout << root->name << endl : cout << "";
-		return treeSearch(root->left, key, false);
+		return treeSearch(root->left, key, true);
 
 	}
-	
+
 	// Key is smaller than root's key 
 	state ? cout << root->name << endl : cout << "";
-	return treeSearch(root->right, key, false);
+	return treeSearch(root->right, key, true);
 }
 
 void treeAdd(BinaryTree*& leaf, string name) {
 
 	BinaryTree* temp = treeSearch(leaf, name, false);
 
-	if (!temp) {
+	if (temp) {
+		cout << "adding.. \n";
+		listAdd(temp->head, name);
+	}
+	else {
 		//create a tree
 		leaf = new BinaryTree;
 		leaf->left = leaf->right = NULL;
 		leaf->head = NULL;
 		leaf->name = name;
-
-	}
-	else {
-		listAdd(temp->head, name);
 	}
 }
 
-	
 
-void treeInsert(BinaryTree * &leaf, string name) {
+
+void treeInsert(BinaryTree*& leaf, string name) {
 
 	//check if there is nothing in the tree
 	if (!leaf) {
@@ -123,7 +122,7 @@ void readFile() {
 
 	//create the root of out tree
 	BinaryTree* root = NULL;
-	
+
 
 	while (read.good()) {
 		read >> name;
@@ -134,7 +133,7 @@ void readFile() {
 
 	}
 
-	
+
 
 	cout << "NAMES INSERTED...\n\n";
 
@@ -148,7 +147,7 @@ void readFile() {
 		cout << "found: ";
 		cout << temp->name << endl;
 
-		cout << "THERE ARE " << getNumListDuplicates(temp->head) << "DUPLICATES \n";
+		cout << "THERE ARE " << getNumListDuplicates(temp->head) << " DUPLICATES \n";
 
 	}
 	else {
